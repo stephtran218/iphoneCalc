@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ContentView: View {
+    let lightGray = Color(red: 211, green: 211, blue: 211)
     @State private var numsAndOperations: [[String]] = [
             ["AC","+/-", "%", "÷"],
             ["7","8", "9", "x"],
@@ -18,55 +19,144 @@ struct ContentView: View {
     @State private var calcScreen: Int = 0
     
     var body: some View {
-        VStack{
-            Text("\(calcScreen)")
-            HStack{
-                Button("AC", action: clear)
-                    .padding(18)
-                    .background(Color.gray)
-                    .foregroundColor(.white)
-                    .cornerRadius(50)
-                Button("+/-", action: negNum)
-                    .padding(18)
-                    .background(Color.gray)
-                    .foregroundColor(.white)
-                    .cornerRadius(50)
-                Button("%", action: percent)
-                    .padding(18)
-                    .background(Color.gray)
-                    .foregroundColor(.white)
-                    .cornerRadius(50)
-                Button("÷", action: divide)
-                    .padding(18)
-                    .background(Color.orange)
-                    .foregroundColor(.white)
-                    .cornerRadius(50)
+        ZStack{
+            Color.black.edgesIgnoringSafeArea(.all)
+            VStack{
+                HStack{
+                    Spacer()
+                    Text("\(calcScreen)")
+                        .bold()
+                        .foregroundColor(.white)
+                        .font(.system(size:52))
+                }
+                HStack{
+                    Button("AC", action: clear)
+                        .frame(width: 70, height: 70)
+                        .background(lightGray)
+                        .foregroundColor(.black)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("+/-", action: negNum)
+                        .frame(width: 70, height: 70)
+                        .background(lightGray)
+                        .foregroundColor(.black)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("%", action: percent)
+                        .frame(width: 70, height: 70)
+                        .background(lightGray)
+                        .foregroundColor(.black)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("÷", action: divide)
+                        .frame(width: 70, height: 70)
+                        .background(Color.orange)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                }
+                HStack{
+                    Button("7", action: seven)
+                        .frame(width: 70, height: 70)
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("8", action: eight)
+                        .frame(width: 70, height: 70)
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("9", action: nine)
+                        .frame(width: 70, height: 70)
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("x", action: multiply)
+                        .frame(width: 70, height: 70)
+                        .background(Color.orange)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                }
+                HStack{
+                    Button("4", action: four)
+                        .frame(width: 70, height: 70)
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("5", action: five)
+                        .frame(width: 70, height: 70)
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("6", action: six)
+                        .frame(width: 70, height: 70)
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("-", action: multiply)
+                        .frame(width: 70, height: 70)
+                        .background(Color.orange)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                }
+                HStack{
+                    Button("1", action: four)
+                        .frame(width: 70, height: 70)
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("2", action: five)
+                        .frame(width: 70, height: 70)
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("3", action: six)
+                        .frame(width: 70, height: 70)
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("+", action: multiply)
+                        .frame(width: 70, height: 70)
+                        .background(Color.orange)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                }
+                HStack{
+                    Button("0", action: four)
+                        .frame(width: 150, height: 70)
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button(".", action: five)
+                        .frame(width: 70, height: 70)
+                        .background(Color.gray)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                    Button("=", action: six)
+                        .frame(width: 70, height: 70)
+                        .background(Color.orange)
+                        .foregroundColor(.white)
+                        .cornerRadius(35)
+                        .font(.system(size:30))
+                }
             }
-            HStack{
-                Button("7", action: seven)
-                    .padding(18)
-                    .background(Color.gray)
-                    .foregroundColor(.white)
-                    .cornerRadius(50)
-                Button("8", action: eight)
-                    .padding(18)
-                    .background(Color.gray)
-                    .foregroundColor(.white)
-                    .cornerRadius(50)
-                Button("9", action: nine)
-                    .padding(18)
-                    .background(Color.gray)
-                    .foregroundColor(.white)
-                    .cornerRadius(50)
-                Button("x", action: multiply)
-                    .padding(18)
-                    .background(Color.orange)
-                    .foregroundColor(.white)
-                    .cornerRadius(50)
-            }
-        }
 
-        .padding()
+            .padding()
+        }
     }
     
     func clear(){
@@ -90,7 +180,19 @@ struct ContentView: View {
     func nine(){
         
     }
+    func four(){
+        
+    }
+    func five(){
+        
+    }
+    func six(){
+        
+    }
     func multiply(){
+        
+    }
+    func press(){
         
     }
 }
