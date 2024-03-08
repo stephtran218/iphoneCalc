@@ -118,20 +118,51 @@ struct ContentView: View {
                     }
                 }
             } else {
-                if let num = Int(calcScreen){
+                if let num = Int(calcScreen) {
                     factor1 += num
                 }
             }
         } else if text == "x" {
-            
-            factor1 += Double(calcScreen)
+            if calcScreen.contains(".") {
+                if let num = Double(calcScreen) {
+                    calcScreen = String(num)
+                    if let intNum = Int(calcScreen) {
+                        factor1 += intNum
+                    }
+                }
+            } else {
+                if let num = Int(calcScreen) {
+                    factor1 += num
+                }
+            }
         } else if text == "+" {
-            factor1 += Double(calcScreen)
+            if calcScreen.contains(".") {
+                if let num = Double(calcScreen) {
+                    calcScreen = String(num)
+                    if let intNum = Int(calcScreen) {
+                        factor1 += intNum
+                    }
+                }
+            } else {
+                if let num = Int(calcScreen) {
+                    factor1 += num
+                }
+            }
         } else {
-            factor1 += Double(calcScreen)
+            if calcScreen.contains(".") {
+                if let num = Double(calcScreen) {
+                    calcScreen = String(num)
+                    if let intNum = Int(calcScreen) {
+                        factor1 += intNum
+                    }
+                }
+            } else {
+                if let num = Int(calcScreen) {
+                    factor1 += num
+                }
+            }
         }
     }
-
 }
 
 struct ContentView_Previews: PreviewProvider {
