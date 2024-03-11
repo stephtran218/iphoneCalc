@@ -107,62 +107,37 @@ struct ContentView: View {
             }
         }
     }
-
-    func calculate(text: String) {
-        if text == "÷" {
-            if calcScreen.contains(".") {
-                if let num = Double(calcScreen) {
-                    calcScreen = String(num)
-                    if let intNum = Int(calcScreen) {
-                        factor1 += intNum
-                    }
-                }
-            } else {
-                if let num = Int(calcScreen) {
-                    factor1 += num
-                }
-            }
-        } else if text == "x" {
-            if calcScreen.contains(".") {
-                if let num = Double(calcScreen) {
-                    calcScreen = String(num)
-                    if let intNum = Int(calcScreen) {
-                        factor1 += intNum
-                    }
-                }
-            } else {
-                if let num = Int(calcScreen) {
-                    factor1 += num
-                }
-            }
-        } else if text == "+" {
-            if calcScreen.contains(".") {
-                if let num = Double(calcScreen) {
-                    calcScreen = String(num)
-                    if let intNum = Int(calcScreen) {
-                        factor1 += intNum
-                    }
-                }
-            } else {
-                if let num = Int(calcScreen) {
-                    factor1 += num
+    
+    //This function checks if the value has a decimal in it
+    func checkIfDecimal(){
+        if calcScreen.contains(".") {
+            if let num = Double(calcScreen) {
+                calcScreen = String(num)
+                if let intNum = Int(calcScreen) {
+                    factor1 += intNum
                 }
             }
         } else {
-            if calcScreen.contains(".") {
-                if let num = Double(calcScreen) {
-                    calcScreen = String(num)
-                    if let intNum = Int(calcScreen) {
-                        factor1 += intNum
-                    }
-                }
-            } else {
-                if let num = Int(calcScreen) {
-                    factor1 += num
-                }
+            if let num = Int(calcScreen) {
+                factor1 += num
             }
         }
     }
+
+    func calculate(text: String) {
+        if text == "÷" {
+            checkIfDecimal()
+            
+        } else if text == "x" {
+            checkIfDecimal()
+        } else if text == "+" {
+            checkIfDecimal()
+        } else {
+            checkIfDecimal()
+        }
+    }
+    
+    
 }
 
 struct ContentView_Previews: PreviewProvider {
