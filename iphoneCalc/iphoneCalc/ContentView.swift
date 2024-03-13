@@ -21,9 +21,14 @@ struct ContentView: View {
     //this sets the calulator screen to 0 before user inputs their own values
     @State private var calcScreen: String = "0"
     //this sets the first factor as 0 for user to later input their's
-    @State private var factor1: Int = 0
+    @State private var factor1: String = "0"
     //this sets the second factor as 0 for the user to later input their's
-    @State private var factor2: Int = 0
+    @State private var factor2: String = "0"
+    
+    //this sets the var to be false, assuming the value the user puts in doesn't contain a decimal
+    @State private var isDecimal: Bool = false
+    
+    @State private var storedOperator: String = ""
     
     var body: some View {
         
@@ -39,7 +44,7 @@ struct ContentView: View {
                     Text("\(calcScreen)")
                         .bold()
                         .foregroundColor(.white)
-                        .font(.system(size:70))
+                        .font(.system(size:80))
                         .padding()
                 }
                 //this for loop will take everything in the numsAndOperations array and take every string as an individual button
@@ -50,41 +55,41 @@ struct ContentView: View {
                             if text == "÷" || text == "x" || text == "+" || text == "-"{
                                 Button("\(text)", action: { operators(text: text) })
                                     .font(.system(size: 32))
-                                    .frame(width: 70, height: 70)
+                                    .frame(width: 88, height: 88)
                                     .background(.orange)
                                     .foregroundColor(.white)
-                                    .cornerRadius(35)
+                                    .cornerRadius(55)
                             //If the button is 0, the padding will be diff bc it's wider
                             } else if text == "0"{
                                 Button("\(text)", action: { handleClicks(text: text) })
                                     .font(.system(size: 32))
-                                    .frame(width: 150, height: 70)
+                                    .frame(width: 178, height: 88)
                                     .background(.gray)
                                     .foregroundColor(.white)
-                                    .cornerRadius(35)
+                                    .cornerRadius(55)
                             //If buttons are the top row, it will be light gray
                             } else if text == "AC" || text == "+/-" || text == "%"{
                                 Button("\(text)", action: { handleClicks(text: text) })
                                     .font(.system(size: 32))
-                                    .frame(width: 70, height: 70)
+                                    .frame(width: 88, height: 88)
                                     .background(lightGray)
-                                    .foregroundColor(.white)
-                                    .cornerRadius(35)
+                                    .foregroundColor(.black)
+                                    .cornerRadius(55)
                             //the rest of the buttons will be gray
                             } else if text == "="{
                                 Button("\(text)", action: { displayAnswer(text: text) })
                                     .font(.system(size: 32))
-                                    .frame(width: 70, height: 70)
+                                    .frame(width: 88, height: 88)
                                     .background(.orange)
                                     .foregroundColor(.white)
-                                    .cornerRadius(35)
+                                    .cornerRadius(55)
                             }else{
                                 Button("\(text)", action: { handleClicks(text: text) })
                                     .font(.system(size: 32))
-                                    .frame(width: 70, height: 70)
+                                    .frame(width: 88, height: 88)
                                     .background(.gray)
                                     .foregroundColor(.white)
-                                    .cornerRadius(35)
+                                    .cornerRadius(55)
                             }
                         }
                     }
@@ -120,7 +125,7 @@ struct ContentView: View {
             if let num = Double(calcScreen) {
                 calcScreen = String(num * 0.01)
             }
-            calcScreen = "\(calcScreen)%"
+            calcScreen = "\(calcScreen)"
         } else if text == "=" {
             // Add functionality for calculating the result here
         } else {
@@ -140,12 +145,14 @@ struct ContentView: View {
         //if calcScreen has a period in it, it will be read as decimal
         if calcScreen.contains(".") {
             //this will convert string into double for calcs
+            isDecimal = true
             if let num = Double(calcScreen) {
                 //this will return it back into a string for display
                 calcScreen = String(num)
             }
         //if it doesn't have a decimal, the string will be convereted into an Int for calculations
         } else {
+            isDecimal = false
             //this converts it from string to int
             if let intNum = Int(calcScreen) {
                 //this converts it back into a string for display
@@ -155,97 +162,97 @@ struct ContentView: View {
     }
     
     //this function is responsible for saving values as the first factor
-    func saveFactOne(num: String, intNum: Int){
-        //this converts the num as a double if it contains a decimal
-        if let firstValue = Double(calcScreen){
-            //this saves it back into a string
-            calcScreen = String(firstValue)
-            //this turns it back into an int so that it can be saved in factor one variable
-            if let decimalFactOne = Int(calcScreen){
-                factor1 += decimalFactOne
-            }
-        } else{
-            factor1 += intNum
-        }
+    func saveFactOne(){
+        factor1 = calcScreen
     }
     
     //this function handles the operation buttons
     func operators(text: String) {
-        //if the click the divide button, it will check if it has a decimal
-        if text == "÷" {
-            checkIfDecimal()
-            saveFactOne(num: String, intNum: <#T##Int#>)
-            //this resets screen back to 0 after user clicks the operation button (assuming they finished inputting their value)
-            calcScreen = "0"
-        //if the click the divide button, it will check if it has a decimal
-        } else if text == "x" {
-            checkIfDecimal()
-            saveFactOne(num: <#T##String#>, intNum: <#T##Int#>)
-            //this resets screen back to 0 after user clicks the operation button (assuming they finished inputting their value)
-            calcScreen = "0"
-        //if the click the divide button, it will check if it has a decimal
-        } else if text == "+" {
-            checkIfDecimal()
-            saveFactOne(num: <#T##String#>, intNum: <#T##Int#>)
-            //this resets screen back to 0 after user clicks the operation button (assuming they finished inputting their value)
-            calcScreen = "0"
-        //if the click the divide button, it will check if it has a decimal
-        } else {
-            checkIfDecimal()
-            saveFactOne(num: <#T##String#>, intNum: <#T##Int#>)
-            //this resets screen back to 0 after user clicks the operation button (assuming they finished inputting their value)
-            calcScreen = "0"
-        }
+        checkIfDecimal()
+        saveFactOne()
+        //this resets screen back to 0 after user clicks the operation button (assuming they finished inputting their value)
+        calcScreen = "0"
+        storedOperator = text
     }
     
     //this function is responsible for saving factor2
-    func saveFactTwo(num: String, intNum: Int){
-        //thi converts second value into double if it has a decimal
-        if let secondValue = Double(calcScreen){
-            //this converts the double back into a string bc calcScreen only takes strings
-            calcScreen = String(secondValue)
-            //this converts the string back into an int so that it can be saved in the factor2 var
-            if let decimalFactTwo = Int(calcScreen){
-                factor2 += decimalFactTwo
-            } else {
-                //if the num is already an int, it doesn't need to be converted and just saved into factor2 already
-                factor2 += intNum
-            }
-        }
+    func saveFactTwo(){
+        factor2 = calcScreen
     }
     
     //this function is responsible for displaying the answer after user clicks equal button
     func displayAnswer(text: String){
         if text == "="{
             checkIfDecimal()
-            saveFactTwo(num: calcScreen, intNum: Int)
-            completeOperation(text: String)
+            saveFactTwo()
+            completeOperation()
         }
     }
     
     //this function is responsible for completing the operations
-    func completeOperation(text: String){
+    func completeOperation(){
         //this var holds the answer that will be calculated
-        var calculatedAnswer: Int = 0
+        var calculatedAnswer: Double = 0.0
         
-        //if they chose to divide,
-        if text == "÷"{
-            //the calulated answer will be factor1 divided by factor2
-            calculatedAnswer = factor1 / factor2
-            //the calculator screen will be updated w/ the answer
-            calcScreen = String(calculatedAnswer)
-        } else if text == "x"{
-            calculatedAnswer = factor1 * factor2
-            calcScreen = String(calculatedAnswer)
-        } else if text == "+"{
-            calculatedAnswer = factor1 + factor2
-            calcScreen = String(calculatedAnswer)
-        } else{
-            calculatedAnswer = factor1 - factor2
-            calcScreen = String(calculatedAnswer)
+        if isDecimal == true{
+            if let factor1Value = Double(factor1), let factor2Value = Double(factor2) {
+                //if they chose to divide,
+                if storedOperator == "÷"{
+                    //the calulated answer will be factor1 divided by factor2
+                    calculatedAnswer = factor1Value / factor2Value
+                    //the calculator screen will be updated w/ the answer
+                    calcScreen = String(calculatedAnswer)
+                    if factor2Value == 0.0{
+                        calcScreen = "Error"
+                    }
+                }else if storedOperator == "x" {
+                    calculatedAnswer = factor1Value * factor2Value
+                    calcScreen = String(calculatedAnswer)
+                }else if storedOperator == "+"{
+                    calculatedAnswer = factor1Value + factor2Value
+                    calcScreen = String(calculatedAnswer)
+                } else{
+                    calculatedAnswer = factor1Value - factor2Value
+                    calcScreen = String(calculatedAnswer)
+                }
+                
+            }
+        
+            if calcScreen.contains(".0"){
+                if let intAnswer = Int(calcScreen){
+                    calcScreen = String(intAnswer)
+                }
+            }
+
+        } else {
+            var calcAnswer: Int = 0
+        
+            if !isDecimal{
+                if let factor1Value = Int(factor1), let factor2Value = Int(factor2){
+                    //if they chose to divide,
+                    if storedOperator == "÷"{
+                        if factor2Value == 0{
+                            calcScreen = "Error"
+                        } else{
+                            //the calulated answer will be factor1 divided by factor2
+                            calcAnswer = factor1Value / factor2Value
+                            //the calculator screen will be updated w/ the answer
+                            calcScreen = String(calcAnswer)
+                        }
+                    } else if storedOperator == "x"{
+                        calcAnswer = factor1Value * factor2Value
+                        calcScreen = String(calcAnswer)
+                    } else if storedOperator == "+"{
+                        calcAnswer = factor1Value + factor2Value
+                        calcScreen = String(calcAnswer)
+                    } else{
+                        calcAnswer = factor1Value - factor2Value
+                        calcScreen = String(calcAnswer)
+                    }
+                }
+            }
         }
     }
-    
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -254,4 +261,3 @@ struct ContentView_Previews: PreviewProvider {
     }
 }
 
-//MAKE BOOLEAN TO SAVE IF IT HAS A DECIMAL OR NOT
