@@ -28,6 +28,7 @@ struct ContentView: View {
     //this sets the var to be false, assuming the value the user puts in doesn't contain a decimal
     @State private var isDecimal: Bool = false
     
+    //this stores which operator user wants
     @State private var storedOperator: String = ""
     
     
@@ -69,7 +70,7 @@ struct ContentView: View {
                                     .foregroundColor(.white)
                                     .cornerRadius(55)
                             //If buttons are the top row, it will be light gray
-                            } else if text == "AC" || text == "+/-" || text == "%"{
+                            } else if text == "AC" || text == "+/-" || text == "%" || text == "C"{
                                 Button("\(text)", action: { handleClicks(text: text) })
                                     .font(.system(size: 32))
                                     .frame(width: 88, height: 88)
@@ -106,7 +107,9 @@ struct ContentView: View {
             // The calculator screen will display 0
             calcScreen = "0"
         //if the user chooses the neg button
-        } else if text == "+/-" {
+        } else if text == "C" {
+            calcScreen = "0"
+        }else if text == "+/-" {
             //this checks if the value contains a decimal value
             if calcScreen.contains(".") {
                 //this will change the string into a double for calculations since it contains a decimal
@@ -138,6 +141,10 @@ struct ContentView: View {
                 // This allows the user to type in more than one digit (ex. values) even when the calc screen is no longer displaying just 0
                 calcScreen += text
             }
+        }
+        //this will turn the "AC" to just "C" when a value has been inputted to clear for user
+        if let _  = Int(text){
+                numsAndOperations[0][0] = "C"
         }
     }
     
