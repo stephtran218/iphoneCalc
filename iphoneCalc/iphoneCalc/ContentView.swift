@@ -30,6 +30,7 @@ struct ContentView: View {
     
     @State private var storedOperator: String = ""
     
+    
     var body: some View {
         
         ZStack{
@@ -56,8 +57,8 @@ struct ContentView: View {
                                 Button("\(text)", action: { operators(text: text) })
                                     .font(.system(size: 32))
                                     .frame(width: 88, height: 88)
-                                    .background(.orange)
-                                    .foregroundColor(.white)
+                                    .background(storedOperator == text ? Color.white : Color.orange)
+                                    .foregroundColor(storedOperator == text ? Color.orange : Color.white)
                                     .cornerRadius(55)
                             //If the button is 0, the padding will be diff bc it's wider
                             } else if text == "0"{
@@ -168,6 +169,7 @@ struct ContentView: View {
     
     //this function handles the operation buttons
     func operators(text: String) {
+        
         checkIfDecimal()
         saveFactOne()
         //this resets screen back to 0 after user clicks the operation button (assuming they finished inputting their value)
@@ -186,6 +188,7 @@ struct ContentView: View {
             checkIfDecimal()
             saveFactTwo()
             completeOperation()
+            storedOperator = ""
         }
     }
     
@@ -202,35 +205,52 @@ struct ContentView: View {
                     calculatedAnswer = factor1Value / factor2Value
                     //the calculator screen will be updated w/ the answer
                     calcScreen = String(calculatedAnswer)
+                    //if the user tries to divide a value by 0,
                     if factor2Value == 0.0{
+                        //the screen will display error because that's undetermined
                         calcScreen = "Error"
                     }
+                //if the user wants to multiply,
                 }else if storedOperator == "x" {
+                    //factor 1 and factor 2 will be multiplied together
                     calculatedAnswer = factor1Value * factor2Value
+                    //this converts the answer back into a string to display on the screen
                     calcScreen = String(calculatedAnswer)
+                //if the user wants to add,
                 }else if storedOperator == "+"{
+                    //factor 1 and factor 2 will be multiplied together
                     calculatedAnswer = factor1Value + factor2Value
+                    //this converts the answer back into a string to display on the screen
                     calcScreen = String(calculatedAnswer)
                 } else{
+                    //this is the last operator option (subtraction) so it will take factor 1 and subtract that by factor 2
                     calculatedAnswer = factor1Value - factor2Value
+                    //this converts the answer back into a string to display on the screen
                     calcScreen = String(calculatedAnswer)
                 }
                 
             }
-        
+            //If the returned value is an integer but has a ".0",
             if calcScreen.contains(".0"){
-                if let intAnswer = Int(calcScreen){
+                //this will convert the answer into an integer, removing the ".0"
+                if let doubleAnswer = Double(calcScreen){
+                    let intAnswer = Int(doubleAnswer)
+                    //this converts the value back into a string to display on the calculator
                     calcScreen = String(intAnswer)
                 }
             }
 
         } else {
+            //this variable will hold the calculated answer as an integer
             var calcAnswer: Int = 0
-        
+            
+            //if the factors don't have a decimal,
             if !isDecimal{
+                //factor 1 and factor 2 get converted into integers
                 if let factor1Value = Int(factor1), let factor2Value = Int(factor2){
                     //if they chose to divide,
                     if storedOperator == "÷"{
+                        //if they try to divide by 0, the screen will display "Error" b/c that's undetermined
                         if factor2Value == 0{
                             calcScreen = "Error"
                         } else{
@@ -239,13 +259,16 @@ struct ContentView: View {
                             //the calculator screen will be updated w/ the answer
                             calcScreen = String(calcAnswer)
                         }
+                    //if user wants to multiply, factor 1 and 2 will be multiplied as integers and converted back into a string
                     } else if storedOperator == "x"{
                         calcAnswer = factor1Value * factor2Value
                         calcScreen = String(calcAnswer)
+                    //if operator is addition, factor one and two will be added as integers and later converted back into a string
                     } else if storedOperator == "+"{
                         calcAnswer = factor1Value + factor2Value
                         calcScreen = String(calcAnswer)
                     } else{
+                        //the last operator is subtraction so factor1 and factor2 will be subtracted as integers and converted back into a string later
                         calcAnswer = factor1Value - factor2Value
                         calcScreen = String(calcAnswer)
                     }
